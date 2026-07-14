@@ -1,0 +1,13 @@
+{
+  "itemGroup.jakgroupsorter": "Example Mod Tab",
+  "block.jakgroupsorter.example_block": "Example Block",
+  "item.jakgroupsorter.example_item": "Example Item",
+
+  "jakgroupsorter.configuration.title": "JAK Group Sorter Configs",
+  "jakgroupsorter.configuration.section.jakgroupsorter.common.toml": "JAK Group Sorter Configs",
+  "jakgroupsorter.configuration.section.jakgroupsorter.common.toml.title": "JAK Group Sorter Configs",
+  "jakgroupsorter.configuration.items": "Item List",
+  "jakgroupsorter.configuration.logDirtBlock": "Log Dirt Block",
+  "jakgroupsorter.configuration.magicNumberIntroduction": "Magic Number Text",
+  "jakgroupsorter.configuration.magicNumber": "Magic Number"
+}
