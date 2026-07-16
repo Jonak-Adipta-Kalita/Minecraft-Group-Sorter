@@ -2,6 +2,8 @@ package jak.groupsorter.block;
 
 import jak.groupsorter.JAKGroupSorter;
 import jak.groupsorter.items.ModItems;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
@@ -20,6 +22,10 @@ public class ModBlocks {
     public static final DeferredBlock<Block> AZURITE_BLOCK = registerBlock("azurite_block", properties -> new Block(properties.strength(4f).requiresCorrectToolForDrops().sound(SoundType.COPPER)));
     public static final DeferredBlock<Block> AZURITE_ORE = registerBlock("azurite_ore", properties -> new DropExperienceBlock(UniformInt.of(2, 4), properties.strength(3f).requiresCorrectToolForDrops().sound(SoundType.STONE)));
     public static final DeferredBlock<Block> AZURITE_DEEPSLATE_ORE = registerBlock("azurite_deepslate_ore", properties -> new DropExperienceBlock(UniformInt.of(3, 5), properties.strength(4f).requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE)));
+
+    public static ResourceKey<Block> getRK(Block block) {
+        return BuiltInRegistries.BLOCK.getResourceKey(block).get();
+    }
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> function) {
         DeferredBlock<T> toReturn = BLOCKS.registerBlock(name, function);
