@@ -1,5 +1,6 @@
 package jak.groupsorter;
 
+import jak.groupsorter.block.ModBlocks;
 import jak.groupsorter.items.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ public class JAKGroupSorter {
     public JAKGroupSorter(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
         ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
         NeoForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -37,6 +39,12 @@ public class JAKGroupSorter {
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(ModItems.AZURITE);
             event.accept(ModItems.RAW_AZURITE);
+        }
+
+        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
+            event.accept(ModBlocks.AZURITE_BLOCK);
+            event.accept(ModBlocks.AZURITE_ORE);
+            event.accept(ModBlocks.AZURITE_DEEPSLATE_ORE);
         }
     }
 
