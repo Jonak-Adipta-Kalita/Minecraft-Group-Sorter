@@ -3,6 +3,7 @@ package jak.groupsorter;
 import jak.groupsorter.datagen.ModBlockLootTableProvider;
 import jak.groupsorter.datagen.ModBlockTagsProvider;
 import jak.groupsorter.datagen.ModModelProvider;
+import jak.groupsorter.datagen.ModRecipeProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
@@ -30,5 +31,6 @@ public class JAKGroupSorterDatagen {
             List.of(new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK)),
             lookupProvider)
         );
+        generator.addProvider(true, new ModRecipeProvider.Runner(packOutput, lookupProvider));
     }
 }
