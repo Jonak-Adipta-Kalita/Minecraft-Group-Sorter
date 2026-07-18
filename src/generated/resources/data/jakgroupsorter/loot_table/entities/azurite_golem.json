@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 3.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "jakgroupsorter:azurite"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "jakgroupsorter:entities/azurite_golem"
+}

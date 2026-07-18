@@ -2,9 +2,8 @@ package jak.groupsorter;
 
 import jak.groupsorter.block.ModBlocks;
 import jak.groupsorter.entity.ModEntities;
+import jak.groupsorter.entity.ModEntityEvents;
 import jak.groupsorter.items.ModItems;
-import net.minecraft.client.renderer.entity.CopperGolemRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -60,7 +59,7 @@ public class JAKGroupSorter {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            EntityRenderers.register(ModEntities.AZURITE_GOLEM.get(), CopperGolemRenderer::new);
+            ModEntityEvents.registerRenderers();
         }
     }
 }

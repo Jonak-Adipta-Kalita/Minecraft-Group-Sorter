@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.animal.golem.CopperGolem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CopperChestBlock;
@@ -62,7 +61,7 @@ public class AzuriteGolemSpawnHandler {
             }
         }
 
-        CopperGolem golem = ModEntities.AZURITE_GOLEM.get().create(serverLevel, EntitySpawnReason.TRIGGERED);
+        AzuriteGolem golem = ModEntities.AZURITE_GOLEM.get().create(serverLevel, EntitySpawnReason.TRIGGERED);
         if (golem != null) {
             BlockPos spawnPos = match.getBlock(0, 0, 0).getPos();
             golem.snapTo(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, 0.0F, 0.0F);
