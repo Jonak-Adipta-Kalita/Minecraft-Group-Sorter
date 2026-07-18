@@ -1,8 +1,14 @@
 package jak.groupsorter;
 
 import jak.groupsorter.block.ModBlocks;
+import jak.groupsorter.entity.ModEntities;
 import jak.groupsorter.items.ModItems;
+import net.minecraft.client.renderer.entity.CopperGolemRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -26,6 +32,7 @@ public class JAKGroupSorter {
         modEventBus.addListener(this::commonSetup);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModEntities.register(modEventBus);
         NeoForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -48,4 +55,12 @@ public class JAKGroupSorter {
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {}
+
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
+    public static class ClientModEvents {
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            EntityRenderers.register(ModEntities.AZURITE_GOLEM.get(), CopperGolemRenderer::new);
+        }
+    }
 }
