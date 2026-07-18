@@ -26,7 +26,7 @@ public class ModEntityLootTableProvider extends EntityLootSubProvider {
             .withPool(LootPool.lootPool()
                 .setRolls(ConstantValue.exactly(1))
                 .add(LootItem.lootTableItem(ModItems.AZURITE.get())
-                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))));
+                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 9))))));
     }
 
     @Override
