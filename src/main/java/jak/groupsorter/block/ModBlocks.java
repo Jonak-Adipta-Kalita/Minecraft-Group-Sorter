@@ -1,15 +1,18 @@
 package jak.groupsorter.block;
 
 import jak.groupsorter.JAKGroupSorter;
+import jak.groupsorter.block.azurite_chest.AzuriteChestBlock;
 import jak.groupsorter.items.ModItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -22,6 +25,8 @@ public class ModBlocks {
     public static final DeferredBlock<Block> AZURITE_BLOCK = registerBlock("azurite_block", properties -> new Block(properties.strength(4f).requiresCorrectToolForDrops().sound(SoundType.COPPER)));
     public static final DeferredBlock<Block> AZURITE_ORE = registerBlock("azurite_ore", properties -> new DropExperienceBlock(UniformInt.of(2, 4), properties.strength(3f).requiresCorrectToolForDrops().sound(SoundType.STONE)));
     public static final DeferredBlock<Block> AZURITE_DEEPSLATE_ORE = registerBlock("azurite_deepslate_ore", properties -> new DropExperienceBlock(UniformInt.of(3, 5), properties.strength(4f).requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE)));
+    public static final DeferredBlock<Block> AZURITE_CHEST = registerBlock("azurite_chest", properties -> new AzuriteChestBlock(SoundEvents.COPPER_CHEST_OPEN, SoundEvents.COPPER_CHEST_CLOSE, properties.strength(3.0F, 6.0F).sound(SoundType.COPPER).requiresCorrectToolForDrops().mapColor(MapColor.COLOR_BLUE)
+    ));
 
     public static ResourceKey<Block> getRK(Block block) {
         return BuiltInRegistries.BLOCK.getResourceKey(block).get();

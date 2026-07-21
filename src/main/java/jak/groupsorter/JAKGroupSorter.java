@@ -1,5 +1,6 @@
 package jak.groupsorter;
 
+import jak.groupsorter.block.ModBlockEntities;
 import jak.groupsorter.block.ModBlocks;
 import jak.groupsorter.entity.ModEntities;
 import jak.groupsorter.entity.ModEntityEvents;
@@ -8,6 +9,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -32,6 +34,7 @@ public class JAKGroupSorter {
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModEntities.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
         NeoForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -50,6 +53,10 @@ public class JAKGroupSorter {
             event.accept(ModBlocks.AZURITE_ORE);
             event.accept(ModBlocks.AZURITE_DEEPSLATE_ORE);
         }
+
+        if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
+            event.accept(ModBlocks.AZURITE_CHEST);
+        }
     }
 
     @SubscribeEvent
@@ -60,6 +67,11 @@ public class JAKGroupSorter {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             ModEntityEvents.registerRenderers();
+        }
+
+        @SubscribeEvent
+        public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+            ModBlockEntities.registerRenderers(event);
         }
     }
 }

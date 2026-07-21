@@ -2,6 +2,7 @@ package jak.groupsorter.entity.azurite_golem;
 
 import jak.groupsorter.JAKGroupSorter;
 import jak.groupsorter.block.ModBlocks;
+import jak.groupsorter.block.azurite_chest.AzuriteChestBlock;
 import jak.groupsorter.entity.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -9,7 +10,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CopperChestBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
@@ -70,7 +70,7 @@ public class AzuriteGolemSpawnHandler {
             BlockInWorld copperBlock = match.getBlock(0, 1, 0);
             BlockInWorld pumpkinBlock = match.getBlock(0, 0, 0);
             Direction facing = pumpkinBlock.getState().getValue(FACING);
-            BlockState blockState = CopperChestBlock.getFromCopperBlock(copperBlock.getState().getBlock(), facing, serverLevel, copperBlock.getPos());
+            BlockState blockState = AzuriteChestBlock.getFromAzuriteBlock(facing, serverLevel, copperBlock.getPos());
             serverLevel.setBlock(copperBlock.getPos(), blockState, 2);
         }
     }

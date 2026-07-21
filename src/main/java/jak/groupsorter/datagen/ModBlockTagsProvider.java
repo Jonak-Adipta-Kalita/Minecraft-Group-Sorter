@@ -20,11 +20,13 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .add(ModBlocks.getRK(ModBlocks.AZURITE_BLOCK.get()))
             .add(ModBlocks.getRK(ModBlocks.AZURITE_ORE.get()))
-            .add(ModBlocks.getRK(ModBlocks.AZURITE_DEEPSLATE_ORE.get()));
+            .add(ModBlocks.getRK(ModBlocks.AZURITE_DEEPSLATE_ORE.get()))
+            .add(ModBlocks.getRK(ModBlocks.AZURITE_CHEST.get()));
 
         tag(BlockTags.NEEDS_STONE_TOOL)
             .add(ModBlocks.getRK(ModBlocks.AZURITE_BLOCK.get()))
             .add(ModBlocks.getRK(ModBlocks.AZURITE_ORE.get()))
-            .add(ModBlocks.getRK(ModBlocks.AZURITE_DEEPSLATE_ORE.get()));
+            .add(ModBlocks.getRK(ModBlocks.AZURITE_DEEPSLATE_ORE.get()))
+            .add(ModBlocks.getRK(ModBlocks.AZURITE_CHEST.get()));
     }
 }

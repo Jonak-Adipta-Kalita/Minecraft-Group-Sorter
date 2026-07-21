@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "jakgroupsorter:item/azurite_chest",
+    "model": {
+      "type": "minecraft:chest",
+      "texture": "jakgroupsorter:azurite"
+    }
+  }
+}

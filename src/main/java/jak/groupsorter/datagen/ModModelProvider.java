@@ -2,6 +2,7 @@ package jak.groupsorter.datagen;
 
 import jak.groupsorter.JAKGroupSorter;
 import jak.groupsorter.block.ModBlocks;
+import jak.groupsorter.block.azurite_chest.AzuriteChestRenderer;
 import jak.groupsorter.items.ModItems;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
@@ -22,5 +23,7 @@ public class ModModelProvider extends ModelProvider {
         blockModels.createTrivialCube(ModBlocks.AZURITE_BLOCK.get());
         blockModels.createTrivialCube(ModBlocks.AZURITE_ORE.get());
         blockModels.createTrivialCube(ModBlocks.AZURITE_DEEPSLATE_ORE.get());
+
+        blockModels.createChest(ModBlocks.AZURITE_CHEST.get(), ModBlocks.AZURITE_BLOCK.get(), AzuriteChestRenderer.AZURITE_TEXTURES, false);
     }
 }

@@ -2,6 +2,7 @@
   "values": [
     "jakgroupsorter:azurite_block",
     "jakgroupsorter:azurite_ore",
-    "jakgroupsorter:azurite_deepslate_ore"
+    "jakgroupsorter:azurite_deepslate_ore",
+    "jakgroupsorter:azurite_chest"
   ]
 }
