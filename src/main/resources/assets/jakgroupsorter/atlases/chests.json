@@ -1,0 +1,7 @@
+{
+    "sources": [
+        { "type": "single", "resource": "jakgroupsorter:entity/chest/azurite" },
+        { "type": "single", "resource": "jakgroupsorter:entity/chest/azurite_left" },
+        { "type": "single", "resource": "jakgroupsorter:entity/chest/azurite_right" }
+    ]
+}

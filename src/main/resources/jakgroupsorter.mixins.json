@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "jak.groupsorter.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

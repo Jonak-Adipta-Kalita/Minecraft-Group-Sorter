@@ -1,6 +1,0 @@
-{
-    "variants": {
-        "lit=true": { "model": "jak:block/zircon_lamp_on" },
-        "lit=false": { "model": "jak:block/zircon_lamp_off" }
-    }
-}

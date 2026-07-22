@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "experience": 0.25,
+  "group": "azurite",
+  "ingredient": "jakgroupsorter:raw_azurite",
+  "result": {
+    "id": "jakgroupsorter:azurite"
+  }
+}
