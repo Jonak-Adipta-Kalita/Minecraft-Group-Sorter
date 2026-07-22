@@ -51,7 +51,7 @@ public class AzuriteGolem extends AbstractGolem implements ContainerUser {
 
     public AzuriteGolem(EntityType<? extends AbstractGolem> type, Level level) {
         super(type, level);
-          this.getNavigation().setRequiredPathLength(48.0F);
+        this.getNavigation().setRequiredPathLength(48.0F);
         this.getNavigation().setCanOpenDoors(true);
         this.setPersistenceRequired();
         this.setState(CopperGolemState.IDLE);
@@ -191,10 +191,6 @@ public class AzuriteGolem extends AbstractGolem implements ContainerUser {
                 this.interactionDropItemAnimationState.stop();
                 this.interactionDropNoItemAnimationState.startIfStopped(this.tickCount);
         }
-    }
-
-    public void spawn() {
-        this.playSpawnSound();
     }
 
     @Override
