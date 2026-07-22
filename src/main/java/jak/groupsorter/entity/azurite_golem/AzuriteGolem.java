@@ -129,7 +129,6 @@ public class AzuriteGolem extends AbstractGolem implements ContainerUser {
         super.customServerAiStep(level);
     }
 
-
     @Override
     public void tick() {
         super.tick();
@@ -139,7 +138,6 @@ public class AzuriteGolem extends AbstractGolem implements ContainerUser {
             }
         }
     }
-
 
     private void setupAnimationStates() {
         switch (this.getState()) {

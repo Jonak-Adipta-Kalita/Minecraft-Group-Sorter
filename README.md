@@ -2,10 +2,14 @@
 
 - [x] Azurite Ecosystem - Ore, Ingot, Block
 
+- [ ] Group Maps
+
 - [ ] Azurite Golem
   - [x] UI
   - [ ] AI
 
-- [ ] Azurite Chest
+- [x] Azurite Chest
 
-- [ ] Azurite Golem Control Center
+- [ ] Chest Room Linker
+
+- [ ] Chest Room Control
