@@ -58,6 +58,10 @@ public class JAKGroupSorter {
         if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
             event.accept(ModBlocks.AZURITE_CHEST);
         }
+
+        if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
+            event.accept(ModItems.AZURITE_GOLEM_SPAWN_EGG);
+        }
     }
 
     @SubscribeEvent

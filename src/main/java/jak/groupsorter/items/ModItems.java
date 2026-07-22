@@ -1,9 +1,11 @@
 package jak.groupsorter.items;
 
 import jak.groupsorter.JAKGroupSorter;
+import jak.groupsorter.entity.ModEntities;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -13,6 +15,7 @@ public class ModItems {
 
     public static final DeferredItem<Item> AZURITE = ITEMS.registerSimpleItem("azurite");
     public static final DeferredItem<Item> RAW_AZURITE = ITEMS.registerSimpleItem("raw_azurite");
+    public static final DeferredItem<Item> AZURITE_GOLEM_SPAWN_EGG = ITEMS.registerItem("azurite_golem_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(ModEntities.AZURITE_GOLEM.get())));
 
     public static ResourceKey<Item> getRK(Item item) {
         return BuiltInRegistries.ITEM.getResourceKey(item).get();
