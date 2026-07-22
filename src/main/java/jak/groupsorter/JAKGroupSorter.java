@@ -4,6 +4,7 @@ import jak.groupsorter.block.ModBlockEntities;
 import jak.groupsorter.block.ModBlocks;
 import jak.groupsorter.entity.ModEntities;
 import jak.groupsorter.entity.ModEntityEvents;
+import jak.groupsorter.entity.ModModelLayers;
 import jak.groupsorter.items.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.api.distmarker.Dist;
@@ -72,6 +73,11 @@ public class JAKGroupSorter {
         @SubscribeEvent
         public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
             ModBlockEntities.registerRenderers(event);
+        }
+
+        @SubscribeEvent
+        public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+            ModModelLayers.registerLayerDefinitions(event);
         }
     }
 }
