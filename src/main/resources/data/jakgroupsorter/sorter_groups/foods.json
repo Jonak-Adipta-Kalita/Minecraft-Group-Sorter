@@ -1,0 +1,5 @@
+{
+    "display_name": "Food",
+    "items": ["minecraft:bread", "minecraft:cooked_beef", "minecraft:apple"],
+    "tags": []
+}

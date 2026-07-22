@@ -6,11 +6,16 @@ import jak.groupsorter.entity.ModEntities;
 import jak.groupsorter.entity.ModEntityEvents;
 import jak.groupsorter.entity.ModModelLayers;
 import jak.groupsorter.items.ModItems;
+import jak.groupsorter.group.DebugGroupsCommand;
+import jak.groupsorter.group.GroupReloadListener;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -83,5 +88,18 @@ public class JAKGroupSorter {
         public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
             ModModelLayers.registerLayerDefinitions(event);
         }
+    }
+
+    @SubscribeEvent
+    public void onAddReloadListeners(AddServerReloadListenersEvent event) {
+        event.addListener(
+            Identifier.fromNamespaceAndPath(MOD_ID, "sorter_groups"),
+            new GroupReloadListener()
+        );
+    }
+
+    @SubscribeEvent
+    public void onRegisterCommands(RegisterCommandsEvent event) {
+        DebugGroupsCommand.register(event.getDispatcher());
     }
 }
