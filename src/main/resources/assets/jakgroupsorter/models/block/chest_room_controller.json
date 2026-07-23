@@ -1,0 +1,40 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with <3 in Blockbench",
+    "parent": "minecraft:block/block",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "jakgroupsorter:block/azurite_block",
+		"1": "jakgroupsorter:block/controller",
+		"particle": "jakgroupsorter:block/azurite_block"
+	},
+	"elements": [
+		{
+			"name": "azurite_block",
+			"from": [0, 0, 0],
+			"to": [16, 10, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 5, 8]},
+			"faces": {
+				"north": {"uv": [0, 6.5, 16, 16], "texture": "#0"},
+				"east": {"uv": [0, 6.5, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 6.5, 16, 16], "texture": "#0"},
+				"west": {"uv": [0, 6.5, 16, 16], "texture": "#0"},
+				"up": {"uv": [16, 16, 0, 0], "texture": "#0"},
+				"down": {"uv": [16, 0, 0, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 10, 0],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 13, 8]},
+			"faces": {
+				"north": {"uv": [8, 0, 16, 3], "texture": "#1"},
+				"east": {"uv": [8, 3, 16, 6], "texture": "#1"},
+				"south": {"uv": [8, 6, 16, 9], "texture": "#1"},
+				"west": {"uv": [8, 9, 16, 12], "texture": "#1"},
+				"up": {"uv": [8, 8, 0, 0], "texture": "#1"},
+				"down": {"uv": [8, 8, 0, 16], "texture": "#1"}
+			}
+		}
+	]
+}

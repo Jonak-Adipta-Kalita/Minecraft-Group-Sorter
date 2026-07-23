@@ -1,6 +1,7 @@
 package jak.groupsorter.block;
 
 import jak.groupsorter.block.azurite_chest.AzuriteChestRenderer;
+import jak.groupsorter.block.chest_room_controller.ControllerBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
@@ -20,6 +21,10 @@ public class ModBlockEntities {
     public static final Supplier<BlockEntityType<ChestBlockEntity>> AZURITE_CHEST =
         BLOCK_ENTITIES.register("azurite_chest",
             () -> new BlockEntityType<>(ModBlockEntities::createAzuriteChest, ModBlocks.AZURITE_CHEST.get()));
+
+    public static final Supplier<BlockEntityType<ControllerBlockEntity>> CONTROLLER =
+        BLOCK_ENTITIES.register("controller",
+            () -> new BlockEntityType<>(ControllerBlockEntity::new, ModBlocks.CONTROLLER.get()));
 
     private static ChestBlockEntity createAzuriteChest(BlockPos pos, BlockState state) {
         return new ChestBlockEntity(AZURITE_CHEST.get(), pos, state);

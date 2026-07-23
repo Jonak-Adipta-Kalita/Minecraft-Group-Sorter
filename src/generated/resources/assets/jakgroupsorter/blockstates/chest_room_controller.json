@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "jakgroupsorter:block/chest_room_controller",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "jakgroupsorter:block/chest_room_controller"
+    },
+    "facing=south": {
+      "model": "jakgroupsorter:block/chest_room_controller",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "jakgroupsorter:block/chest_room_controller",
+      "y": 270
+    }
+  }
+}

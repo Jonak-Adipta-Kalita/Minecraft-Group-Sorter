@@ -21,12 +21,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             .add(ModBlocks.getRK(ModBlocks.AZURITE_BLOCK.get()))
             .add(ModBlocks.getRK(ModBlocks.AZURITE_ORE.get()))
             .add(ModBlocks.getRK(ModBlocks.AZURITE_DEEPSLATE_ORE.get()))
-            .add(ModBlocks.getRK(ModBlocks.AZURITE_CHEST.get()));
+            .add(ModBlocks.getRK(ModBlocks.AZURITE_CHEST.get()))
+            .add(ModBlocks.getRK(ModBlocks.CONTROLLER.get()));
 
         tag(BlockTags.NEEDS_STONE_TOOL)
             .add(ModBlocks.getRK(ModBlocks.AZURITE_BLOCK.get()))
             .add(ModBlocks.getRK(ModBlocks.AZURITE_ORE.get()))
             .add(ModBlocks.getRK(ModBlocks.AZURITE_DEEPSLATE_ORE.get()))
-            .add(ModBlocks.getRK(ModBlocks.AZURITE_CHEST.get()));
+            .add(ModBlocks.getRK(ModBlocks.AZURITE_CHEST.get()))
+            .add(ModBlocks.getRK(ModBlocks.CONTROLLER.get()));
     }
 }

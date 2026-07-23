@@ -6,5 +6,6 @@
     "block.jakgroupsorter.azurite_block": "Azurite Block",
     "block.jakgroupsorter.azurite_ore": "Azurite Ore",
     "block.jakgroupsorter.azurite_deepslate_ore": "Azurite Deepslate Ore",
-    "block.jakgroupsorter.azurite_chest": "Azurite Chest"
+    "block.jakgroupsorter.azurite_chest": "Azurite Chest",
+    "block.jakgroupsorter.chest_room_controller": "Chest Room Controller"
 }

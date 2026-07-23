@@ -2,7 +2,9 @@
 
 - [x] Azurite Ecosystem - Ore, Ingot, Block
 
-- [ ] Group Maps
+- [ ] Group Maps\
+  - [x] Loader
+  - [ ] Data (using Datagen)
 
 - [ ] Azurite Golem
   - [x] UI
