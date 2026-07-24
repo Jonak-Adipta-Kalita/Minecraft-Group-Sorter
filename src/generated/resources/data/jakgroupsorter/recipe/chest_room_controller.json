@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "chest_room_controller",
+  "key": {
+    "A": "jakgroupsorter:azurite_block",
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone_block"
+  },
+  "pattern": [
+    "III",
+    "ARA",
+    "AAA"
+  ],
+  "result": {
+    "id": "jakgroupsorter:chest_room_controller"
+  }
+}
