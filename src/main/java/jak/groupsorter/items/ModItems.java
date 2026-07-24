@@ -17,6 +17,8 @@ public class ModItems {
     public static final DeferredItem<Item> RAW_AZURITE = ITEMS.registerSimpleItem("raw_azurite");
     public static final DeferredItem<Item> AZURITE_GOLEM_SPAWN_EGG = ITEMS.registerItem("azurite_golem_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(ModEntities.AZURITE_GOLEM.get())));
 
+    public static final DeferredItem<Item> CHEST_ROOM_LINKER = ITEMS.registerItem("chest_room_linker", properties -> new Item(properties.stacksTo(1)));
+
     public static ResourceKey<Item> getRK(Item item) {
         return BuiltInRegistries.ITEM.getResourceKey(item).get();
     }

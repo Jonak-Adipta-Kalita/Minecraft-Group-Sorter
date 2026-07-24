@@ -69,6 +69,17 @@ public class ModRecipeProvider extends RecipeProvider {
             .group("chest_room_controller")
             .save(output);
 
+        shaped(RecipeCategory.MISC, ModItems.CHEST_ROOM_LINKER.get())
+            .pattern("AAA")
+            .pattern(" C ")
+            .pattern("ACA")
+            .define('A', ModItems.AZURITE.get())
+            .define('C', Items.COPPER_INGOT)
+            .unlockedBy(getHasName(ModItems.AZURITE.get()), has(ModItems.AZURITE))
+            .unlockedBy(getHasName(Items.COPPER_INGOT), has(Items.COPPER_INGOT))
+            .group("chest_room_linker")
+            .save(output);
+
         List<ItemLike> AZURITE_SMELTABLES = List.of(ModItems.RAW_AZURITE, ModBlocks.AZURITE_ORE, ModBlocks.AZURITE_DEEPSLATE_ORE);
         oreSmelting(AZURITE_SMELTABLES, RecipeCategory.MISC, CookingBookCategory.MISC, ModItems.AZURITE.get(), 0.25f, 200, "azurite");
         oreBlasting(AZURITE_SMELTABLES, RecipeCategory.MISC, CookingBookCategory.MISC, ModItems.AZURITE.get(), 0.25f, 100, "azurite");

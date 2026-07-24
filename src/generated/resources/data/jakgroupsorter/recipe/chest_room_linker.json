@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "chest_room_linker",
+  "key": {
+    "A": "jakgroupsorter:azurite",
+    "C": "minecraft:copper_ingot"
+  },
+  "pattern": [
+    "AAA",
+    " C ",
+    "ACA"
+  ],
+  "result": {
+    "id": "jakgroupsorter:chest_room_linker"
+  }
+}
