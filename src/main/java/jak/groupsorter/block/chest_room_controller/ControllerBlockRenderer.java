@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -45,6 +46,8 @@ public class ControllerBlockRenderer implements BlockEntityRenderer<ControllerBl
             null,
             0
         );
+
+        renderState.facing = blockEntity.getBlockState().getValue(ControllerBlock.FACING);
     }
 
     @Override
@@ -59,6 +62,11 @@ public class ControllerBlockRenderer implements BlockEntityRenderer<ControllerBl
         }
 
         poseStack.pushPose();
+
+        float facingYRot = getYRotationForFacing(renderState.facing);
+        poseStack.translate(0.5, 0.5, 0.5);
+        poseStack.mulPose(Axis.YP.rotationDegrees(facingYRot));
+        poseStack.translate(-0.5, -0.5, -0.5);
 
         poseStack.translate(1.001, 0.8125, 0.501);
         poseStack.mulPose(Axis.YP.rotationDegrees(90));
@@ -75,5 +83,14 @@ public class ControllerBlockRenderer implements BlockEntityRenderer<ControllerBl
         );
 
         poseStack.popPose();
+    }
+
+    private static float getYRotationForFacing(Direction facing) {
+        return switch (facing) {
+            case NORTH -> 90F;
+            case SOUTH -> 270F;
+            case WEST -> 180F;
+            default -> 0F;
+        };
     }
 }
