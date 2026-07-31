@@ -101,17 +101,25 @@ public class ControllerBlock extends HorizontalDirectionalBlock implements Entit
 
         UUID heldID = heldStack.get(ModDataComponents.BOUND_CONTROLLER.get());
 
-        if (heldID == null) {
+        if (!controller.isControllerClaimed()) {
+            if (heldID != null) {
+                player.sendOverlayMessage(Component.literal("Already bounded components can't be rebounded ;-;"));
+                return InteractionResult.FAIL;
+            }
+
             ItemStack toStore = heldStack.copyWithCount(1);
             toStore.set(ModDataComponents.BOUND_CONTROLLER.get(), controller.getControllerId());
             toStore.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
             controller.setLinkerItem(toStore);
+            controller.setControllerClaimed(true);
             controller.setRunning(true);
             heldStack.shrink(1);
 
             player.sendOverlayMessage(Component.literal("Linker bound to this controller and Chest Room started :D"));
             return InteractionResult.SUCCESS;
-        } else if (heldID.equals(controller.getControllerId())) {
+        }
+
+        if (heldID != null && heldID.equals(controller.getControllerId())) {
             ItemStack toStore = heldStack.copyWithCount(1);
             controller.setLinkerItem(toStore);
             controller.setRunning(true);

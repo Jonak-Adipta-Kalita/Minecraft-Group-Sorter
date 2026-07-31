@@ -25,6 +25,7 @@ public class ControllerBlockEntity extends BlockEntity {
     private boolean running = false;
 
     private UUID controllerID = UUID.randomUUID();
+    private boolean controllerClaimed = false;
 
     public ControllerBlockEntity(BlockPos worldPosition, BlockState blockState) {
         super(ModBlockEntities.CONTROLLER.get(), worldPosition, blockState);
@@ -61,12 +62,22 @@ public class ControllerBlockEntity extends BlockEntity {
         }
     }
 
+    public boolean isControllerClaimed() {
+        return this.controllerClaimed;
+    }
+
+    public void setControllerClaimed(boolean controllerClaimed) {
+        this.controllerClaimed = controllerClaimed;
+        this.setChanged();
+    }
+
     @Override
     protected void saveAdditional(@NonNull ValueOutput output) {
         super.saveAdditional(output);
         output.store("linker_item", ItemStack.OPTIONAL_CODEC, this.linkerItem);
         output.putBoolean("running", this.running);
         output.store("controller_id", UUIDUtil.CODEC, this.controllerID);
+        output.putBoolean("controller_claimed", this.controllerClaimed);
     }
 
     @Override
@@ -75,6 +86,7 @@ public class ControllerBlockEntity extends BlockEntity {
         this.linkerItem = input.read("linker_item", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
         this.running = input.getBooleanOr("running", true);
         this.controllerID = input.read("controller_id", UUIDUtil.CODEC).orElseGet(UUID::randomUUID);
+        this.controllerClaimed = input.getBooleanOr("controller_claimed", false);
     }
 
     @Override
