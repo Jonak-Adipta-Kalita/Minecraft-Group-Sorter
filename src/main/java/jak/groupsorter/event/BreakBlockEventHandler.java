@@ -27,14 +27,16 @@ public class BreakBlockEventHandler {
             }
         }
 
-        if (blockEntity instanceof AzuriteChestEntity chest && chest.getLinkedController() != null) {
-            BlockPos controllerPos = chest.getLinkedController();
-            if (level.getBlockEntity(controllerPos) instanceof ControllerBlockEntity controller) {
-                controller.unlinkInputChest(event.getPos());
+        if (blockEntity instanceof AzuriteChestEntity chest) {
+            if (chest.getLinkedController() != null) {
+                BlockPos controllerPos = chest.getLinkedController();
+                if (level.getBlockEntity(controllerPos) instanceof ControllerBlockEntity controller) {
+                    controller.unlinkInputChest(event.getPos());
+                }
+                event.getPlayer().sendOverlayMessage(
+                    Component.literal("Unlinked Input-Chest ;-;")
+                );
             }
-            event.getPlayer().sendOverlayMessage(
-                Component.literal("Unlinked Input-Chest ;-;")
-            );
         }
     }
 }

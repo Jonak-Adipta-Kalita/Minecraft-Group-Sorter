@@ -1,6 +1,7 @@
 package jak.groupsorter.items.chest_room_linker;
 
 import jak.groupsorter.block.ModBlocks;
+import jak.groupsorter.block.azurite_chest.AzuriteChestEntity;
 import jak.groupsorter.block.chest_room_controller.ControllerBlockEntity;
 import jak.groupsorter.data_components.ModDataComponents;
 import net.minecraft.core.BlockPos;
@@ -49,26 +50,34 @@ public class LinkerItem extends Item {
             return InteractionResult.FAIL;
         }
 
-        if (state.is(ModBlocks.AZURITE_CHEST.get())) {
+        if (state.is(ModBlocks.AZURITE_CHEST.get()) && level.getBlockEntity(pos) instanceof AzuriteChestEntity azuriteChest) {
             boolean wasLinked = controller.isInputChestLinked(pos);
+            boolean isDouble = state.hasProperty(ChestBlock.TYPE) && state.getValue(ChestBlock.TYPE) != ChestType.SINGLE;
+            BlockPos otherHalfPos = isDouble ? ChestBlock.getConnectedBlockPos(pos, state) : null;
 
             if (wasLinked) {
                 controller.unlinkInputChest(pos);
-                if (state.hasProperty(ChestBlock.TYPE) && state.getValue(ChestBlock.TYPE) != ChestType.SINGLE) {
-                    BlockPos otherHalf = ChestBlock.getConnectedBlockPos(pos, state);
-                    controller.unlinkInputChest(otherHalf);
+                azuriteChest.setLinkedController(null);
+
+                if (otherHalfPos != null && level.getBlockEntity(otherHalfPos) instanceof AzuriteChestEntity otherHalf) {
+                    controller.unlinkInputChest(otherHalfPos);
+                    otherHalf.setLinkedController(null);
                 }
+
                 if (player != null) {
-                    player.sendOverlayMessage(Component.literal("Unlinked Input-Chest at ;-;"));
+                    player.sendOverlayMessage(Component.literal("Unlinked Input-Chest " + (isDouble ? " (double chest)" : "") + " ;-;"));
                 }
             } else {
                 controller.linkInputChest(pos);
-                if (state.hasProperty(ChestBlock.TYPE) && state.getValue(ChestBlock.TYPE) != ChestType.SINGLE) {
-                    BlockPos otherHalf = ChestBlock.getConnectedBlockPos(pos, state);
-                    controller.linkInputChest(otherHalf);
+                azuriteChest.setLinkedController(controllerPos);
+
+                if (otherHalfPos != null && level.getBlockEntity(otherHalfPos) instanceof AzuriteChestEntity otherHalf) {
+                    controller.linkInputChest(otherHalfPos);
+                    otherHalf.setLinkedController(controllerPos);
                 }
+
                 if (player != null) {
-                    player.sendOverlayMessage(Component.literal("Linked Input-Chest :D"));
+                    player.sendOverlayMessage(Component.literal("Linked Input-Chest" + (isDouble ? " (double chest)" : "") + " :D"));
                 }
             }
 

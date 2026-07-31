@@ -11,7 +11,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
@@ -42,7 +41,7 @@ public class AzuriteChestBlock extends ChestBlock {
 
     @Override
     public @NonNull BlockEntity newBlockEntity(@NonNull BlockPos pos, @NonNull BlockState state) {
-        return new ChestBlockEntity(ModBlockEntities.AZURITE_CHEST.get(), pos, state);
+        return new AzuriteChestEntity(pos, state);
     }
 
     public static BlockState getFromAzuriteBlock(Direction facing, Level level, BlockPos pos) {
