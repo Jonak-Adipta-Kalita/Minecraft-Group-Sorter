@@ -2,6 +2,7 @@ package jak.groupsorter.items;
 
 import jak.groupsorter.JAKGroupSorter;
 import jak.groupsorter.entity.ModEntities;
+import jak.groupsorter.items.chest_room_linker.LinkerItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
@@ -17,7 +18,7 @@ public class ModItems {
     public static final DeferredItem<Item> RAW_AZURITE = ITEMS.registerSimpleItem("raw_azurite");
     public static final DeferredItem<Item> AZURITE_GOLEM_SPAWN_EGG = ITEMS.registerItem("azurite_golem_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(ModEntities.AZURITE_GOLEM.get())));
 
-    public static final DeferredItem<Item> CHEST_ROOM_LINKER = ITEMS.registerItem("chest_room_linker", properties -> new Item(properties.stacksTo(1)));
+    public static final DeferredItem<Item> CHEST_ROOM_LINKER = ITEMS.registerItem("chest_room_linker", properties -> new LinkerItem(properties.stacksTo(1)));
 
     public static ResourceKey<Item> getRK(Item item) {
         return BuiltInRegistries.ITEM.getResourceKey(item).get();

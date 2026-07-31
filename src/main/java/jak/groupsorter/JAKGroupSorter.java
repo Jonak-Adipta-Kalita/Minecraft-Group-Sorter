@@ -2,6 +2,7 @@ package jak.groupsorter;
 
 import jak.groupsorter.block.ModBlockEntities;
 import jak.groupsorter.block.ModBlocks;
+import jak.groupsorter.data_components.ModDataComponents;
 import jak.groupsorter.entity.ModEntities;
 import jak.groupsorter.entity.ModEntityEvents;
 import jak.groupsorter.entity.ModModelLayers;
@@ -41,6 +42,7 @@ public class JAKGroupSorter {
         ModBlocks.register(modEventBus);
         ModEntities.register(modEventBus);
         ModBlockEntities.register(modEventBus);
+        ModDataComponents.register(modEventBus);
         NeoForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

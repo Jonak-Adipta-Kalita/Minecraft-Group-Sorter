@@ -2,6 +2,7 @@ package jak.groupsorter.block.chest_room_controller;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import jak.groupsorter.JAKGroupSorter;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -38,6 +39,7 @@ public class ControllerBlockRenderer implements BlockEntityRenderer<ControllerBl
         BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTick, cameraPos, crumblingOverlay);
 
         ItemStack stack = blockEntity.getLinkerItem();
+        JAKGroupSorter.LOGGER.info(String.valueOf(stack));
         this.itemModelResolver.updateForTopItem(
             renderState.linkerItemRenderState,
             stack,
