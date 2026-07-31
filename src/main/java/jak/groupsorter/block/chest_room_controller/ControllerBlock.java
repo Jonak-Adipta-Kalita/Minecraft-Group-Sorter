@@ -109,6 +109,7 @@ public class ControllerBlock extends HorizontalDirectionalBlock implements Entit
 
             ItemStack toStore = heldStack.copyWithCount(1);
             toStore.set(ModDataComponents.BOUND_CONTROLLER.get(), controller.getControllerId());
+            toStore.set(ModDataComponents.BOUND_CONTROLLER_POS.get(), pos);
             toStore.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
             controller.setLinkerItem(toStore);
             controller.setControllerClaimed(true);
@@ -132,6 +133,4 @@ public class ControllerBlock extends HorizontalDirectionalBlock implements Entit
         player.sendOverlayMessage(Component.literal("This linker is already bound to another controller ;-;"));
         return InteractionResult.FAIL;
     }
-
-
 }

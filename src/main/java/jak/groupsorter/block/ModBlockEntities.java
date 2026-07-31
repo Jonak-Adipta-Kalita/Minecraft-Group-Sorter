@@ -1,12 +1,11 @@
 package jak.groupsorter.block;
 
+import jak.groupsorter.block.azurite_chest.AzuriteChestEntity;
 import jak.groupsorter.block.azurite_chest.AzuriteChestRenderer;
 import jak.groupsorter.block.chest_room_controller.ControllerBlockEntity;
 import jak.groupsorter.block.chest_room_controller.ControllerBlockRenderer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.bus.api.IEventBus;
@@ -21,15 +20,11 @@ public class ModBlockEntities {
 
     public static final Supplier<BlockEntityType<ChestBlockEntity>> AZURITE_CHEST =
         BLOCK_ENTITIES.register("azurite_chest",
-            () -> new BlockEntityType<>(ModBlockEntities::createAzuriteChest, ModBlocks.AZURITE_CHEST.get()));
+            () -> new BlockEntityType<>(AzuriteChestEntity::new, ModBlocks.AZURITE_CHEST.get()));
 
     public static final Supplier<BlockEntityType<ControllerBlockEntity>> CONTROLLER =
         BLOCK_ENTITIES.register("chest_room_controller",
             () -> new BlockEntityType<>(ControllerBlockEntity::new, ModBlocks.CONTROLLER.get()));
-
-    private static ChestBlockEntity createAzuriteChest(BlockPos pos, BlockState state) {
-        return new ChestBlockEntity(AZURITE_CHEST.get(), pos, state);
-    }
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);

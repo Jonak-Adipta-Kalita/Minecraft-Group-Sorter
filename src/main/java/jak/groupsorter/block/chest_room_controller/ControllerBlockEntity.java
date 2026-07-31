@@ -18,6 +18,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.NonNull;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class ControllerBlockEntity extends BlockEntity {
@@ -26,6 +28,8 @@ public class ControllerBlockEntity extends BlockEntity {
 
     private UUID controllerID = UUID.randomUUID();
     private boolean controllerClaimed = false;
+
+    private final Set<BlockPos> linkedInputChests = new HashSet<>();
 
     public ControllerBlockEntity(BlockPos worldPosition, BlockState blockState) {
         super(ModBlockEntities.CONTROLLER.get(), worldPosition, blockState);
@@ -71,22 +75,50 @@ public class ControllerBlockEntity extends BlockEntity {
         this.setChanged();
     }
 
+    public void linkInputChest(BlockPos pos) {
+        this.linkedInputChests.add(pos);
+        this.setChanged();
+    }
+
+    public void unlinkInputChest(BlockPos pos) {
+        this.linkedInputChests.remove(pos);
+        this.setChanged();
+    }
+
+    public boolean isInputChestLinked(BlockPos pos) {
+        return this.linkedInputChests.contains(pos);
+    }
+
+    public Set<BlockPos> getLinkedInputChests() {
+        return this.linkedInputChests;
+    }
+
     @Override
     protected void saveAdditional(@NonNull ValueOutput output) {
         super.saveAdditional(output);
+
         output.store("linker_item", ItemStack.OPTIONAL_CODEC, this.linkerItem);
         output.putBoolean("running", this.running);
         output.store("controller_id", UUIDUtil.CODEC, this.controllerID);
         output.putBoolean("controller_claimed", this.controllerClaimed);
+
+        ValueOutput.TypedOutputList<BlockPos> inputList = output.list("linked_input_chests", BlockPos.CODEC);
+        for (BlockPos chestPos : this.linkedInputChests) {
+            inputList.add(chestPos);
+        }
     }
 
     @Override
     protected void loadAdditional(@NonNull ValueInput input) {
         super.loadAdditional(input);
+
         this.linkerItem = input.read("linker_item", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
         this.running = input.getBooleanOr("running", true);
         this.controllerID = input.read("controller_id", UUIDUtil.CODEC).orElseGet(UUID::randomUUID);
         this.controllerClaimed = input.getBooleanOr("controller_claimed", false);
+
+        this.linkedInputChests.clear();
+        input.list("linked_input_chests", BlockPos.CODEC).ifPresent(list -> list.forEach(this.linkedInputChests::add));
     }
 
     @Override
@@ -104,7 +136,9 @@ public class ControllerBlockEntity extends BlockEntity {
         if (this.hasLinkerItem() && this.level != null) {
             ItemStack toDrop = this.linkerItem.copy();
             toDrop.remove(ModDataComponents.BOUND_CONTROLLER.get());
+            toDrop.remove(ModDataComponents.BOUND_CONTROLLER_POS.get());
             toDrop.remove(DataComponents.ENCHANTMENT_GLINT_OVERRIDE);
+
             Containers.dropItemStack(this.level, pos.getX(), pos.getY(), pos.getZ(), toDrop);
         }
     }
