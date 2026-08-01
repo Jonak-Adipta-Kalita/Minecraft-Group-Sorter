@@ -1,7 +1,7 @@
 package jak.groupsorter.block.chest_room_controller;
 
 import com.mojang.serialization.MapCodec;
-import jak.groupsorter.data_components.ModDataComponents;
+import jak.groupsorter.block.ModDataComponents;
 import jak.groupsorter.items.chest_room_linker.LinkerItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

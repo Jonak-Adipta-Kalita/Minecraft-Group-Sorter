@@ -3,7 +3,7 @@ package jak.groupsorter.block.chest_room_controller;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import jak.groupsorter.block.ModBlockEntities;
-import jak.groupsorter.data_components.ModDataComponents;
+import jak.groupsorter.block.ModDataComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.UUIDUtil;

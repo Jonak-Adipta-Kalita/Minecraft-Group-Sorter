@@ -1,4 +1,4 @@
-package jak.groupsorter.data_components;
+package jak.groupsorter.block;
 
 import jak.groupsorter.JAKGroupSorter;
 import net.minecraft.core.BlockPos;

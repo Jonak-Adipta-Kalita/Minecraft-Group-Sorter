@@ -3,7 +3,7 @@ package jak.groupsorter.items.chest_room_linker;
 import jak.groupsorter.block.ModBlocks;
 import jak.groupsorter.block.azurite_chest.AzuriteChestEntity;
 import jak.groupsorter.block.chest_room_controller.ControllerBlockEntity;
-import jak.groupsorter.data_components.ModDataComponents;
+import jak.groupsorter.block.ModDataComponents;
 import jak.groupsorter.menu.group_picker.GroupPickerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
