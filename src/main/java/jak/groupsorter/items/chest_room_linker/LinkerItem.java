@@ -4,10 +4,15 @@ import jak.groupsorter.block.ModBlocks;
 import jak.groupsorter.block.azurite_chest.AzuriteChestEntity;
 import jak.groupsorter.block.chest_room_controller.ControllerBlockEntity;
 import jak.groupsorter.data_components.ModDataComponents;
+import jak.groupsorter.menu.group_picker.GroupPickerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -20,6 +25,12 @@ import org.jspecify.annotations.NonNull;
 public class LinkerItem extends Item {
     public LinkerItem(Properties properties) {
         super(properties);
+    }
+
+    private boolean isVanillaChestLike(BlockState state) {
+        return state.is(net.minecraft.world.level.block.Blocks.CHEST)
+            || state.is(net.minecraft.world.level.block.Blocks.TRAPPED_CHEST)
+            || state.is(net.minecraft.world.level.block.Blocks.BARREL);
     }
 
     @Override
@@ -80,6 +91,25 @@ public class LinkerItem extends Item {
                     player.sendOverlayMessage(Component.literal("Linked Input-Chest" + (isDouble ? " (double chest)" : "") + " :D"));
                 }
             }
+
+            return InteractionResult.SUCCESS;
+        }
+
+        if (isVanillaChestLike(state) && player instanceof ServerPlayer serverPlayer) {
+            serverPlayer.openMenu(new MenuProvider() {
+                @Override
+                public @NonNull Component getDisplayName() {
+                    return Component.literal("Pick a Group");
+                }
+
+                @Override
+                public AbstractContainerMenu createMenu(int i, @NonNull Inventory inventory, @NonNull Player player) {
+                    return new GroupPickerMenu(i, inventory, controllerPos, pos);
+                }
+            }, buf -> {
+                BlockPos.STREAM_CODEC.encode(buf, controllerPos);
+                BlockPos.STREAM_CODEC.encode(buf, pos);
+            });
 
             return InteractionResult.SUCCESS;
         }

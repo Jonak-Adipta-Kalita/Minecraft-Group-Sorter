@@ -1,5 +1,7 @@
 package jak.groupsorter.block.chest_room_controller;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import jak.groupsorter.block.ModBlockEntities;
 import jak.groupsorter.data_components.ModDataComponents;
 import net.minecraft.core.BlockPos;
@@ -10,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -18,9 +21,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.NonNull;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class ControllerBlockEntity extends BlockEntity {
     private ItemStack linkerItem = ItemStack.EMPTY;
@@ -30,6 +31,7 @@ public class ControllerBlockEntity extends BlockEntity {
     private boolean controllerClaimed = false;
 
     private final Set<BlockPos> linkedInputChests = new HashSet<>();
+    private final Map<Identifier, Set<BlockPos>> groupToOutputChests = new HashMap<>();
 
     public ControllerBlockEntity(BlockPos worldPosition, BlockState blockState) {
         super(ModBlockEntities.CONTROLLER.get(), worldPosition, blockState);
@@ -56,7 +58,9 @@ public class ControllerBlockEntity extends BlockEntity {
         return !this.linkerItem.isEmpty();
     }
 
-    public boolean getRunning() { return this.running; }
+    public boolean getRunning() {
+        return this.running;
+    }
 
     public void setRunning(boolean running) {
         this.running = running;
@@ -93,6 +97,24 @@ public class ControllerBlockEntity extends BlockEntity {
         return this.linkedInputChests;
     }
 
+    public void addOutputChest(Identifier group, BlockPos pos) {
+        this.groupToOutputChests.computeIfAbsent(group, _ -> new HashSet<>()).add(pos);
+        this.setChanged();
+    }
+
+    public void removeOutputChest(Identifier group, BlockPos pos) {
+        Set<BlockPos> set = this.groupToOutputChests.get(group);
+        if (set != null) {
+            set.remove(pos);
+            if (set.isEmpty()) this.groupToOutputChests.remove(group);
+        }
+        this.setChanged();
+    }
+
+    public Set<BlockPos> getOutputChestsForGroup(Identifier group) {
+        return Set.copyOf(this.groupToOutputChests.getOrDefault(group, Set.of()));
+    }
+
     @Override
     protected void saveAdditional(@NonNull ValueOutput output) {
         super.saveAdditional(output);
@@ -105,6 +127,13 @@ public class ControllerBlockEntity extends BlockEntity {
         ValueOutput.TypedOutputList<BlockPos> inputList = output.list("linked_input_chests", BlockPos.CODEC);
         for (BlockPos chestPos : this.linkedInputChests) {
             inputList.add(chestPos);
+        }
+
+        var list = output.list("output_chests", OutputChestEntry.CODEC);
+        for (var entry : this.groupToOutputChests.entrySet()) {
+            for (BlockPos pos : entry.getValue()) {
+                list.add(new OutputChestEntry(entry.getKey(), pos));
+            }
         }
     }
 
@@ -119,6 +148,10 @@ public class ControllerBlockEntity extends BlockEntity {
 
         this.linkedInputChests.clear();
         input.list("linked_input_chests", BlockPos.CODEC).ifPresent(list -> list.forEach(this.linkedInputChests::add));
+
+        this.groupToOutputChests.clear();
+        input.list("output_chests", OutputChestEntry.CODEC).ifPresent(list ->
+            list.forEach(e -> this.groupToOutputChests.computeIfAbsent(e.group(), _ -> new HashSet<>()).add(e.pos())));
     }
 
     @Override
@@ -142,4 +175,11 @@ public class ControllerBlockEntity extends BlockEntity {
             Containers.dropItemStack(this.level, pos.getX(), pos.getY(), pos.getZ(), toDrop);
         }
     }
+}
+
+record OutputChestEntry(Identifier group, BlockPos pos) {
+    public static final Codec<OutputChestEntry> CODEC = RecordCodecBuilder.create(i -> i.group(
+        Identifier.CODEC.fieldOf("group").forGetter(OutputChestEntry::group),
+        BlockPos.CODEC.fieldOf("pos").forGetter(OutputChestEntry::pos)
+    ).apply(i, OutputChestEntry::new));
 }

@@ -9,12 +9,14 @@ import jak.groupsorter.entity.ModModelLayers;
 import jak.groupsorter.items.ModItems;
 import jak.groupsorter.group.DebugGroupsCommand;
 import jak.groupsorter.group.GroupReloadListener;
+import jak.groupsorter.menu.ModMenus;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import org.slf4j.Logger;
@@ -43,6 +45,7 @@ public class JAKGroupSorter {
         ModEntities.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModDataComponents.register(modEventBus);
+        ModMenus.register(modEventBus);
         NeoForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -94,6 +97,11 @@ public class JAKGroupSorter {
         @SubscribeEvent
         public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
             ModModelLayers.registerLayerDefinitions(event);
+        }
+
+        @SubscribeEvent
+        public static void registerScreens(RegisterMenuScreensEvent event) {
+            ModMenus.registerScreens(event);
         }
     }
 
