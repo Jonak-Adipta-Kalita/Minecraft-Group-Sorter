@@ -9,6 +9,7 @@ import jak.groupsorter.entity.azurite_golem.AzuriteGolem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -34,7 +35,38 @@ public class RemovalEventHandler {
                 event.getPlayer().sendOverlayMessage(
                     Component.literal("Insert this controller's key before breaking it!")
                 );
+                return;
             }
+
+            for (BlockPos chestPos : controller.getLinkedInputChests()) {
+                if (level.getBlockEntity(chestPos) instanceof AzuriteChestEntity chest) {
+                    chest.setLinkedController(null);
+                }
+            }
+
+            for (Identifier group : controller.getAllOutputChestGroups()) {
+                for (BlockPos chestPos : controller.getOutputChestsForGroup(group)) {
+                    if (level.getBlockEntity(chestPos) instanceof BlockEntity chestEntity
+                        && chestEntity.hasData(ModAttachments.OUTPUT_CHEST_LINK.get())) {
+                        chestEntity.removeData(ModAttachments.OUTPUT_CHEST_LINK.get());
+                        chestEntity.setChanged();
+                    }
+                }
+            }
+
+            if (level instanceof ServerLevel serverLevel) {
+                for (UUID golemId : controller.getAllAssignedGolemIds()) {
+                    if (serverLevel.getEntity(golemId) instanceof AzuriteGolem golem) {
+                        golem.setBoundControllerPos(null);
+                    }
+                }
+            }
+
+            event.getPlayer().sendOverlayMessage(
+                Component.literal("Controller destroyed — all links and assignments cleared")
+            );
+
+            return;
         }
 
         if (blockEntity instanceof AzuriteChestEntity chest) {

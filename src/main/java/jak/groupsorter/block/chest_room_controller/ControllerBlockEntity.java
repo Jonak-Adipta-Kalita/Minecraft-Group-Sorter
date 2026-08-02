@@ -215,6 +215,14 @@ public class ControllerBlockEntity extends BlockEntity {
         }
     }
 
+    public Set<Identifier> getAllOutputChestGroups() {
+        return Set.copyOf(this.groupToOutputChests.keySet());
+    }
+
+    public Set<UUID> getAllAssignedGolemIds() {
+        return Set.copyOf(this.golemGroupAssignments.values());
+    }
+
     public Map<Identifier, UUID> getAllGroupAssignments() {
       return Map.copyOf(this.golemGroupAssignments);
     }
