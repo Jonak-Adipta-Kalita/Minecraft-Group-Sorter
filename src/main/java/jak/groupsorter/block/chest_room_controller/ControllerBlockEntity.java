@@ -33,6 +33,8 @@ public class ControllerBlockEntity extends BlockEntity {
     private final Set<BlockPos> linkedInputChests = new HashSet<>();
     private final Map<Identifier, Set<BlockPos>> groupToOutputChests = new HashMap<>();
 
+    private final Map<Identifier, UUID> golemGroupAssignments = new HashMap<>();
+
     public ControllerBlockEntity(BlockPos worldPosition, BlockState blockState) {
         super(ModBlockEntities.CONTROLLER.get(), worldPosition, blockState);
     }
@@ -115,6 +117,34 @@ public class ControllerBlockEntity extends BlockEntity {
         return Set.copyOf(this.groupToOutputChests.getOrDefault(group, Set.of()));
     }
 
+    public boolean isGroupClaimedByOtherGolem(Identifier group, UUID golemId) {
+        UUID owner = this.golemGroupAssignments.get(group);
+        return owner != null && !owner.equals(golemId);
+    }
+
+    public UUID getGroupGolem(Identifier group) {
+        return this.golemGroupAssignments.get(group);
+    }
+
+
+    public void assignGolemGroup(Identifier group, UUID golemId) {
+        this.golemGroupAssignments.put(group, golemId);
+        this.setChanged();
+    }
+
+    public void unassignGolemGroup(Identifier group) {
+        this.golemGroupAssignments.remove(group);
+        this.setChanged();
+    }
+
+    public Set<Identifier> getGroupsAssignedToGolem(UUID golemId) {
+        Set<Identifier> result = new HashSet<>();
+        for (var entry : this.golemGroupAssignments.entrySet()) {
+            if (entry.getValue().equals(golemId)) result.add(entry.getKey());
+        }
+        return result;
+    }
+
     @Override
     protected void saveAdditional(@NonNull ValueOutput output) {
         super.saveAdditional(output);
@@ -135,6 +165,11 @@ public class ControllerBlockEntity extends BlockEntity {
                 list.add(new OutputChestEntry(entry.getKey(), pos));
             }
         }
+
+        var assignmentList = output.list("group_assignments", GroupAssignmentEntry.CODEC);
+        for (var e : this.golemGroupAssignments.entrySet()) {
+            assignmentList.add(new GroupAssignmentEntry(e.getKey(), e.getValue()));
+        }
     }
 
     @Override
@@ -152,6 +187,10 @@ public class ControllerBlockEntity extends BlockEntity {
         this.groupToOutputChests.clear();
         input.list("output_chests", OutputChestEntry.CODEC).ifPresent(list ->
             list.forEach(e -> this.groupToOutputChests.computeIfAbsent(e.group(), _ -> new HashSet<>()).add(e.pos())));
+
+        this.golemGroupAssignments.clear();
+        input.list("group_assignments", GroupAssignmentEntry.CODEC).ifPresent(list ->
+            list.forEach(e -> this.golemGroupAssignments.put(e.group(), e.golemId())));
     }
 
     @Override
@@ -175,6 +214,10 @@ public class ControllerBlockEntity extends BlockEntity {
             Containers.dropItemStack(this.level, pos.getX(), pos.getY(), pos.getZ(), toDrop);
         }
     }
+
+    public Map<Identifier, UUID> getAllGroupAssignments() {
+      return Map.copyOf(this.golemGroupAssignments);
+    }
 }
 
 record OutputChestEntry(Identifier group, BlockPos pos) {
@@ -182,4 +225,11 @@ record OutputChestEntry(Identifier group, BlockPos pos) {
         Identifier.CODEC.fieldOf("group").forGetter(OutputChestEntry::group),
         BlockPos.CODEC.fieldOf("pos").forGetter(OutputChestEntry::pos)
     ).apply(i, OutputChestEntry::new));
+}
+
+record GroupAssignmentEntry(Identifier group, UUID golemId) {
+    public static final Codec<GroupAssignmentEntry> CODEC = RecordCodecBuilder.create(i -> i.group(
+        Identifier.CODEC.fieldOf("group").forGetter(GroupAssignmentEntry::group),
+        UUIDUtil.CODEC.fieldOf("golem_id").forGetter(GroupAssignmentEntry::golemId)
+    ).apply(i, GroupAssignmentEntry::new));
 }

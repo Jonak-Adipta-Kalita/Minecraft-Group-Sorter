@@ -12,14 +12,13 @@ public class ModAttachments {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES =
         DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, JAKGroupSorter.MOD_ID);
 
-    public static final Supplier<AttachmentType<LinkedOutputData>> OUTPUT_CHEST_LINK =
+    public static final Supplier<AttachmentType<LinkedChestOutputData>> OUTPUT_CHEST_LINK =
         ATTACHMENT_TYPES.register("output_chest_link", () ->
-            AttachmentType.builder(() -> (LinkedOutputData) null)
-                .serialize(LinkedOutputData.CODEC)
+            AttachmentType.builder(() -> (LinkedChestOutputData) null)
+                .serialize(LinkedChestOutputData.CODEC)
                 .build());
 
     public static void register(IEventBus modEventBus) {
         ATTACHMENT_TYPES.register(modEventBus);
     }
 }
-

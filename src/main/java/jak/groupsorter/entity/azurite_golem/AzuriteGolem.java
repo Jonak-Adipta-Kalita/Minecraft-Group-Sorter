@@ -1,15 +1,26 @@
 package jak.groupsorter.entity.azurite_golem;
 
+import jak.groupsorter.block.ModDataComponents;
+import jak.groupsorter.block.chest_room_controller.ControllerBlockEntity;
+import jak.groupsorter.items.chest_room_linker.LinkerItem;
+import jak.groupsorter.menu.golem_group_assignment.GolemGroupAssignmentMenu;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.UUIDUtil;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.profiling.Profiler;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
@@ -19,6 +30,10 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.animal.golem.AbstractGolem;
 import net.minecraft.world.entity.animal.golem.CopperGolemState;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.ChestBlock;
@@ -26,11 +41,15 @@ import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class AzuriteGolem extends AbstractGolem implements ContainerUser {
     private static final Brain.Provider<AzuriteGolem> BRAIN_PROVIDER = Brain.provider(
@@ -41,6 +60,7 @@ public class AzuriteGolem extends AbstractGolem implements ContainerUser {
     );
 
     private @Nullable BlockPos openedChestPos;
+    private @Nullable BlockPos boundControllerPos;
 
     private int idleAnimationStartTick = 0;
     private final AnimationState idleAnimationState = new AnimationState();
@@ -261,5 +281,76 @@ public class AzuriteGolem extends AbstractGolem implements ContainerUser {
     protected void actuallyHurt(@NonNull ServerLevel level, @NonNull DamageSource source, float dmg) {
         super.actuallyHurt(level, source, dmg);
         this.setState(CopperGolemState.IDLE);
+    }
+
+    public @Nullable BlockPos getBoundControllerPos() {
+        return this.boundControllerPos;
+    }
+
+    public void setBoundControllerPos(@Nullable BlockPos pos) {
+        this.boundControllerPos = pos;
+    }
+
+    @Override
+    protected void addAdditionalSaveData(@NonNull ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        if (this.boundControllerPos != null) {
+            output.store("bound_controller_pos", BlockPos.CODEC, this.boundControllerPos);
+        }
+    }
+
+    @Override
+    protected void readAdditionalSaveData(@NonNull ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.boundControllerPos = input.read("bound_controller_pos", BlockPos.CODEC).orElse(null);
+    }
+
+    @Override
+    public @NonNull InteractionResult mobInteract(Player player, @NonNull InteractionHand hand) {
+        ItemStack heldStack = player.getItemInHand(hand);
+
+        if (heldStack.getItem() instanceof LinkerItem && player instanceof ServerPlayer serverPlayer) {
+            if (this.level().isClientSide()) {
+                return InteractionResult.SUCCESS;
+            }
+
+            BlockPos controllerPos = heldStack.get(ModDataComponents.BOUND_CONTROLLER_POS.get());
+            if (controllerPos == null) {
+                player.sendOverlayMessage(Component.literal("Bind this linker to a controller first!"));
+                return InteractionResult.FAIL;
+            }
+
+            if (!(this.level().getBlockEntity(controllerPos) instanceof ControllerBlockEntity controller)) {
+                player.sendOverlayMessage(Component.literal("Bound controller no longer exists!"));
+                return InteractionResult.FAIL;
+            }
+
+            this.setBoundControllerPos(controllerPos);
+
+            serverPlayer.openMenu(new MenuProvider() {
+                @Override
+                public @NonNull Component getDisplayName() {
+                    return Component.literal("Assign Groups");
+                }
+                @Override
+                public AbstractContainerMenu createMenu(int id, @NonNull Inventory inv, @NonNull Player p) {
+                    return new GolemGroupAssignmentMenu(id, inv, controllerPos, AzuriteGolem.this.getUUID(), controller.getAllGroupAssignments());
+                }
+            }, buf -> {
+                BlockPos.STREAM_CODEC.encode(buf, controllerPos);
+                UUIDUtil.STREAM_CODEC.encode(buf, this.getUUID());
+
+                Map<Identifier, UUID> assignments = controller.getAllGroupAssignments();
+                buf.writeVarInt(assignments.size());
+                for (var entry : assignments.entrySet()) {
+                    Identifier.STREAM_CODEC.encode(buf, entry.getKey());
+                    UUIDUtil.STREAM_CODEC.encode(buf, entry.getValue());
+                }
+            });
+
+            return InteractionResult.SUCCESS;
+        }
+
+        return super.mobInteract(player, hand);
     }
 }

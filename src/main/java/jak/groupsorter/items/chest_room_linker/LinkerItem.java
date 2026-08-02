@@ -1,12 +1,15 @@
 package jak.groupsorter.items.chest_room_linker;
 
+import jak.groupsorter.attachments.LinkedChestOutputData;
+import jak.groupsorter.attachments.ModAttachments;
 import jak.groupsorter.block.ModBlocks;
 import jak.groupsorter.block.azurite_chest.AzuriteChestEntity;
 import jak.groupsorter.block.chest_room_controller.ControllerBlockEntity;
 import jak.groupsorter.block.ModDataComponents;
-import jak.groupsorter.menu.group_picker.GroupPickerMenu;
+import jak.groupsorter.menu.chest_group_picker.ChestGroupPickerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -18,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import org.jspecify.annotations.NonNull;
@@ -96,25 +100,34 @@ public class LinkerItem extends Item {
         }
 
         if (isVanillaChestLike(state) && player instanceof ServerPlayer serverPlayer) {
+            BlockEntity chestEntity = level.getBlockEntity(pos);
+            Identifier existingGroup = null;
+            if (chestEntity != null && chestEntity.hasData(ModAttachments.OUTPUT_CHEST_LINK.get())) {
+                LinkedChestOutputData data = chestEntity.getData(ModAttachments.OUTPUT_CHEST_LINK.get());
+                if (data != null) {
+                    existingGroup = data.group();
+                }
+            }
+            Identifier finalExistingGroup = existingGroup;
+
             serverPlayer.openMenu(new MenuProvider() {
                 @Override
-                public @NonNull Component getDisplayName() {
-                    return Component.literal("Pick a Group");
-                }
+                public @NonNull Component getDisplayName() { return Component.literal("Pick a group"); }
 
                 @Override
-                public AbstractContainerMenu createMenu(int i, @NonNull Inventory inventory, @NonNull Player player) {
-                    return new GroupPickerMenu(i, inventory, controllerPos, pos);
+                public AbstractContainerMenu createMenu(int id, @NonNull Inventory inv, @NonNull Player p) {
+                    return new ChestGroupPickerMenu(id, inv, controllerPos, pos, finalExistingGroup);
                 }
             }, buf -> {
                 BlockPos.STREAM_CODEC.encode(buf, controllerPos);
                 BlockPos.STREAM_CODEC.encode(buf, pos);
+                buf.writeBoolean(finalExistingGroup != null);
+                if (finalExistingGroup != null) {
+                    Identifier.STREAM_CODEC.encode(buf, finalExistingGroup);
+                }
             });
-
             return InteractionResult.SUCCESS;
         }
-
-        // The other handlers
 
         return InteractionResult.PASS;
     }
