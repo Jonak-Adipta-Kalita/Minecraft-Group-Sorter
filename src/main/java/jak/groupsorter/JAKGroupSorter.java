@@ -7,9 +7,7 @@ import jak.groupsorter.block.ModDataComponents;
 import jak.groupsorter.entity.ModEntities;
 import jak.groupsorter.entity.ModEntityEvents;
 import jak.groupsorter.entity.ModModelLayers;
-import jak.groupsorter.group.ExportCreativeGroupsCommand;
 import jak.groupsorter.items.ModItems;
-import jak.groupsorter.group.DebugGroupsCommand;
 import jak.groupsorter.group.GroupReloadListener;
 import jak.groupsorter.menu.ModMenus;
 import net.minecraft.resources.Identifier;
@@ -18,10 +16,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
-import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -65,6 +61,9 @@ public class JAKGroupSorter {
 
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
             event.accept(ModBlocks.AZURITE_BLOCK);
+        }
+
+        if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
             event.accept(ModBlocks.AZURITE_ORE);
             event.accept(ModBlocks.AZURITE_DEEPSLATE_ORE);
         }
@@ -115,15 +114,5 @@ public class JAKGroupSorter {
             Identifier.fromNamespaceAndPath(MOD_ID, "sorter_groups"),
             new GroupReloadListener()
         );
-    }
-
-    @SubscribeEvent
-    public void onRegisterCommands(RegisterCommandsEvent event) {
-        DebugGroupsCommand.register(event.getDispatcher());
-    }
-
-    @SubscribeEvent
-    public void onRegisterClientCommands(RegisterClientCommandsEvent event) {
-        ExportCreativeGroupsCommand.register(event.getDispatcher());
     }
 }

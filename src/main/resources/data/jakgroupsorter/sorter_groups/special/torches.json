@@ -1,0 +1,15 @@
+{
+    "display_item": "Torches and Lights",
+    "items": [
+        "minecraft:torch",
+        "minecraft:soul_torch",
+        "minecraft:copper_torch",
+        "minecraft:lantern",
+        "minecraft:soul_lantern",
+        "minecraft:end_rod",
+        "minecraft:sea_lantern",
+        "minecraft:ochre_froglight",
+        "minecraft:verdant_froglight",
+        "minecraft:pearlescent_froglight"
+    ]
+}

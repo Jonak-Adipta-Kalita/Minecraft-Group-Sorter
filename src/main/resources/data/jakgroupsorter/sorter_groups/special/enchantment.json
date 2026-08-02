@@ -1,0 +1,12 @@
+{
+    "display_name": "Enchantment",
+    "items": [
+        "minecraft:lapis_lazuli",
+        "minecraft:book",
+        "minecraft:paper",
+        "minecraft:leather",
+        "minecraft:enchanted_book",
+        "minecraft:experience_bottle",
+        "minecraft:enchanting_table"
+    ]
+}

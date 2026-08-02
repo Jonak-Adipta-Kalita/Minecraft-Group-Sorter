@@ -6,10 +6,9 @@ import net.minecraft.resources.Identifier;
 
 import java.util.List;
 
-public record GroupDefinition(String displayName, List<Identifier> items, List<Identifier> tags) {
+public record GroupDefinition(String displayName, List<Identifier> items) {
     public static final Codec<GroupDefinition> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.STRING.fieldOf("display_name").forGetter(GroupDefinition::displayName),
-        Identifier.CODEC.listOf().optionalFieldOf("items", List.of()).forGetter(GroupDefinition::items),
-        Identifier.CODEC.listOf().optionalFieldOf("tags", List.of()).forGetter(GroupDefinition::tags)
+        Identifier.CODEC.listOf().optionalFieldOf("items", List.of()).forGetter(GroupDefinition::items)
     ).apply(instance, GroupDefinition::new));
 }

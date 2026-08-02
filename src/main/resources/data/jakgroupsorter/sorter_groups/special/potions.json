@@ -1,0 +1,21 @@
+{
+    "display_name": "Potions & Brewing",
+    "items": [
+        "minecraft:potion",
+        "minecraft:splash_potion",
+        "minecraft:lingering_potion",
+        "minecraft:ominous_bottle",
+        "minecraft:glass_bottle",
+        "minecraft:nether_wart",
+        "minecraft:glowstone_dust",
+        "minecraft:dragon_breath",
+        "minecraft:fermented_spider_eye",
+        "minecraft:blaze_powder",
+        "minecraft:sugar",
+        "minecraft:rabbit_foot",
+        "minecraft:glistering_melon_slice",
+        "minecraft:magma_cream",
+        "minecraft:ghast_tear",
+        "minecraft:brewing_stand"
+    ]
+}

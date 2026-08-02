@@ -24,7 +24,7 @@ public class GroupReloadListener extends SimpleJsonResourceReloadListener<GroupD
         for (Map.Entry<Identifier, GroupDefinition> entry : parsed.entrySet()) {
             Identifier id = entry.getKey();
             GroupDefinition def = entry.getValue();
-            result.put(id, new Group(id, def.displayName(), def.items(), def.tags()));
+            result.put(id, new Group(id, def.displayName(), def.items()));
         }
         LOADED_GROUPS = Map.copyOf(result);
         JAKGroupSorter.LOGGER.info("Loaded {} sorter groups", LOADED_GROUPS.size());

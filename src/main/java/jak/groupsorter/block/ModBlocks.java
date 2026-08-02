@@ -23,7 +23,7 @@ import java.util.function.Function;
 public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(JAKGroupSorter.MOD_ID);
 
-    public static final DeferredBlock<Block> AZURITE_BLOCK = registerBlock("azurite_block", properties -> new Block(properties.strength(4f).requiresCorrectToolForDrops().sound(SoundType.COPPER)));
+    public static final DeferredBlock<Block> AZURITE_BLOCK = registerBlock("azurite_block", properties -> new Block(properties.strength(10f).requiresCorrectToolForDrops().sound(SoundType.COPPER)));
     public static final DeferredBlock<Block> AZURITE_ORE = registerBlock("azurite_ore", properties -> new DropExperienceBlock(UniformInt.of(2, 4), properties.strength(3f).requiresCorrectToolForDrops().sound(SoundType.STONE)));
     public static final DeferredBlock<Block> AZURITE_DEEPSLATE_ORE = registerBlock("azurite_deepslate_ore", properties -> new DropExperienceBlock(UniformInt.of(3, 5), properties.strength(4f).requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE)));
 
